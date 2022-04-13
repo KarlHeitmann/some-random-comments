@@ -25,7 +25,7 @@ const httpServer = http.createServer(function(req, res) {
     buffer += decoder.write(data)
   })
 
-  req.on('end', function() {
+  req.on('end', async function() {
     buffer += decoder.end()
 
     const chosenHandler = typeof(router[trimmedPath]) !== 'undefined' ? router[trimmedPath] : notFound;
@@ -38,14 +38,14 @@ const httpServer = http.createServer(function(req, res) {
       payload: buffer
     }
 
-    chosenHandler(data, function(statusCode, payload) {
+    await chosenHandler(data, function(statusCode, payload) {
       statusCode = typeof(statusCode) == 'number' ? statusCode : 200;
 
       payload = typeof(payload) == 'object' ? payload : {};
 
       const payloadString = JSON.stringify(payload);
       // const payloadString = "asddsa\n";
-      console.log(res)
+      // console.log(res)
       res.setHeader('Content-Type', 'application/json')
       // res.setHeader('Access-Control-Allow-Origin', '*')
       res.setHeader('Access-Control-Allow-Origin', '*')
