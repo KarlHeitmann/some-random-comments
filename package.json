@@ -7,8 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "client": "yarn start --prefix client",
-    "dev": "concurrently \"yarn start\" \"yarn client\"",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run start\" \"npm run client\"",
     "server:dev": "nodemon server.js"
   },
   "author": "Karl Heitmann",
