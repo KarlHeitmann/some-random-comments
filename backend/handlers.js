@@ -24,12 +24,13 @@ handlers.sample = function(data, callback) {
 
     res.on("end", function (chunk) {
       const body = Buffer.concat(chunks);
-      const comments = body.toString().split("\n\n").map(comment => {
+      const comments = body.toString().split("\n\n").map((comment, index) => {
         return {
           content: comment,
           avatar: `person_ph_${Math.floor(Math.random() * 4 + 1)}`,
           votes: Math.floor(Math.random() * 10),
           date: new Date(2022, Math.floor(Math.random() * 3), Math.floor(Math.random())),
+          key: index,
         }
       });
       console.log("comments", comments);

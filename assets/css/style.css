@@ -1,0 +1,13 @@
+small > strong {
+  color: #4B587C;
+}
+
+h5 {
+  color: #21293C;
+  font-weight: 600;
+}
+
+h5 > span {
+  color: #4B587C;
+  font-weight: 400;
+}
