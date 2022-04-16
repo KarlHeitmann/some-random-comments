@@ -91,11 +91,18 @@ function replyClick(e) {
   console.log("REPLY click")
   console.log(e)
   console.log("upvoteClick comment_key: ", key)
+  document.querySelector('#modalContainer').classList.add('is-active')
+}
+
+function closeModal() {
+  console.log("click")
+  document.querySelector('#modalContainer').classList.remove('is-active')
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
   const { comments } = await requestComments()
   console.table(comments)
+  document.querySelector('.modal-close').addEventListener('click', closeModal)
   comments.forEach(comment => {
     const row = generateRowHtml(comment)
     document.querySelector('#comments').innerHTML += row
