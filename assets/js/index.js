@@ -50,20 +50,49 @@ const generateRowHtml = ({content, avatar, date, key}) => {
           </span>
         </h5>
         <p>${content}</p>
-        <small><strong>&#x2303; <span id="upvote-${key}">Upvote</span> <span id="reply-${key}">Reply</span></strong></small>
+        <small>
+          <strong>&#x2303;
+            <span
+              data-key="${key}"
+              id="upvote-${key}">
+              Upvote</span>
+            <span
+              data-key="${key}"
+              id="reply-${key}"
+              >Reply</span>
+          </strong>
+        </small>
       </div>
     </div>
     `
 }
 
+function upvoteClick(e) {
+  const {key} = e.target.dataset
+  console.log("---- upvoteClick")
+  console.log(e)
+  console.log("upvoteClick comment_key: ", key)
+}
+
+function replyClick(e) {
+  const {key} = e.target.dataset
+  console.log("REPLY click")
+  console.log(e)
+  console.log("upvoteClick comment_key: ", key)
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
-  console.log("Hello World");
   const { comments } = await requestComments()
   console.table(comments)
   comments.forEach(comment => {
     const row = generateRowHtml(comment)
     document.querySelector('#comments').innerHTML += row
+    setTimeout(() => { // XXX // BUG // HACK: By some strange reason, it is not binding the eventListener click without this setTimeout. It appears that when DOMContentLoaded is fired, attaching events to these recently added events are not attached. Maybe I should wait for another event to bind these event listener, or maybe I should use 'document.createElement' instead of 'document.innerHTML'
+      const strUpvote = `#upvote-${comment.key}`
+      const el = document.querySelector(strUpvote)
+      el.addEventListener('click', upvoteClick)
+      document.querySelector(`#reply-${comment.key}`).addEventListener('click', replyClick)
+    }, 1000);
   });
-  // console.log(comments)
   console.log("fin")
 })
