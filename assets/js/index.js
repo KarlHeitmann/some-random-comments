@@ -99,7 +99,7 @@ function closeModal() {
   document.querySelector('#modalContainer').classList.remove('is-active')
 }
 
-function createComment(e) {
+async function createComment(e) {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "text/plain");
   
@@ -115,8 +115,10 @@ function createComment(e) {
 
   console.log("::::::::")
   
-  fetch("http://localhost:3000/comment", requestOptions)
+  const {comment} = await fetch("http://localhost:3000/comment", requestOptions)
     .then(response => response.json())
+  const row = generateRowHtml(comment)
+  document.querySelector('#comments').innerHTML += row
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
