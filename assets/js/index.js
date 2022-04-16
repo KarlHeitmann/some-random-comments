@@ -8,7 +8,7 @@ const requestComments = async () => {
     }
   };
   
-  return fetch("http://localhost:3000/sample", requestOptions)
+  return fetch("http://localhost:3000/comments", requestOptions)
     .then(response => response.json())
 }
 

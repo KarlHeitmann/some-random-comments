@@ -1,11 +1,27 @@
 const https = require('http');
-
+const fs = require('fs')
 const handlers = {};
+
+const readCommentsFS = (file) => JSON.parse(fs.readFileSync(file))
+const writeCommentsFS = (file, comments) => fs.writeFileSync(file, JSON.stringify(comments)) 
 
 handlers.upvote = function(data, callback) {
   console.log("data", data)
-  console.log("data.queryStringObject", data.queryStringObject.key)
-  callback(200, {count: Math.floor(Math.random() * 100)});
+  const {key} = data.queryStringObject
+  console.log("data.queryStringObject", key)
+  const comments = readCommentsFS('seeds.json')
+  const comment = comments.find(comment => comment.key = key)
+  const i = comments.findIndex(comment => comment.key = key)
+  comment.votes = comment.votes + 1
+  comments[i] = comment
+
+  callback(200, comment);
+}
+
+handlers.comments = function(data, callback) {
+  const comments = readCommentsFS('seeds.json')
+  writeCommentsFS('db.json', comments)
+  callback(200, {comments})
 }
 
 handlers.sample = function(data, callback) {
@@ -58,6 +74,7 @@ handlers.sample = function(data, callback) {
 const router = {
   'sample': handlers.sample,
   'upvote': handlers.upvote,
+  'comments': handlers.comments,
 }
 
 module.exports = router
