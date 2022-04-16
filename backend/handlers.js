@@ -2,6 +2,12 @@ const https = require('http');
 
 const handlers = {};
 
+handlers.upvote = function(data, callback) {
+  console.log("data", data)
+  console.log("data.queryStringObject", data.queryStringObject.key)
+  callback(200, {count: Math.floor(Math.random() * 100)});
+}
+
 handlers.sample = function(data, callback) {
   // Callback a http status code, and a payload object
   // callback(406, {'name': 'sample handler'});
@@ -24,12 +30,13 @@ handlers.sample = function(data, callback) {
 
     res.on("end", function (chunk) {
       const body = Buffer.concat(chunks);
-      const comments = body.toString().split("\n\n").map(comment => {
+      const comments = body.toString().split("\n\n").map((comment, index) => {
         return {
           content: comment,
           avatar: `person_ph_${Math.floor(Math.random() * 4 + 1)}`,
           votes: Math.floor(Math.random() * 10),
           date: new Date(2022, Math.floor(Math.random() * 3), Math.floor(Math.random())),
+          key: index,
         }
       });
       console.log("comments", comments);
@@ -49,7 +56,8 @@ handlers.sample = function(data, callback) {
 
 // Define a request router
 const router = {
-  'sample': handlers.sample
+  'sample': handlers.sample,
+  'upvote': handlers.upvote,
 }
 
 module.exports = router
