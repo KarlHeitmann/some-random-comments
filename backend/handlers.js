@@ -6,14 +6,15 @@ const readCommentsFS = (file) => JSON.parse(fs.readFileSync(file))
 const writeCommentsFS = (file, comments) => fs.writeFileSync(file, JSON.stringify(comments)) 
 
 handlers.upvote = function(data, callback) {
-  console.log("data", data)
+  // console.log("data", data)
   const {key} = data.queryStringObject
-  console.log("data.queryStringObject", key)
-  const comments = readCommentsFS('seeds.json')
-  const comment = comments.find(comment => comment.key = key)
-  const i = comments.findIndex(comment => comment.key = key)
+  // console.log("data.queryStringObject", key)
+  const comments = readCommentsFS('db.json')
+  const comment = comments.find(comment => comment.key == key)
+  const i = comments.findIndex(comment => comment.key == key)
   comment.votes = comment.votes + 1
   comments[i] = comment
+  writeCommentsFS('db.json', comments)
 
   callback(200, comment);
 }

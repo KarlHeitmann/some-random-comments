@@ -33,7 +33,7 @@ function timeSince(timeStamp) {
   }
 }
 
-const generateRowHtml = ({content, avatar, date, key}) => {
+const generateRowHtml = ({content, avatar, date, key, votes}) => {
   console.log(date)
   // debugger
   return `
@@ -55,7 +55,7 @@ const generateRowHtml = ({content, avatar, date, key}) => {
             <span
               data-key="${key}"
               id="upvote-${key}">
-              Upvote</span>
+              ${votes} - Upvote</span>
             <span
               data-key="${key}"
               id="reply-${key}"
@@ -81,7 +81,7 @@ function upvoteClick(e) {
     .then(response => response.json())
     .then(result => {
       console.log(result)
-      document.querySelector(`#upvote-${key}`).innerHTML = `${result.count} - Upvote`
+      document.querySelector(`#upvote-${key}`).innerHTML = `${result.votes} - Upvote`
     })
     .catch(error => console.log('error', error));
 }
