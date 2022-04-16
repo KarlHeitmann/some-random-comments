@@ -1,11 +1,27 @@
 {
   "name": "ghost_product_engineer_karl",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is a sample web that has a frontend and backend. The goal is to have everything in vanilla JS and vanilla NodeJS. No npm, no additional packages. However, there are some functions that were \"borrowed\" from other places, check the comments to see where I do get it from.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server:dev": "nodemon server.js"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Karl Heitmann",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KarlHeitmann/some-random-comments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KarlHeitmann/some-random-comments/issues"
+  },
+  "homepage": "https://github.com/KarlHeitmann/some-random-comments#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongoose": "^6.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
