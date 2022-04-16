@@ -72,6 +72,18 @@ function upvoteClick(e) {
   console.log("---- upvoteClick")
   console.log(e)
   console.log("upvoteClick comment_key: ", key)
+  var requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+  };
+  
+  return fetch(`http://localhost:3000/upvote?key=${key}`, requestOptions)
+    .then(response => response.json())
+    .then(result => {
+      console.log(result)
+      document.querySelector(`#upvote-${key}`).innerHTML = `${result.count} - Upvote`
+    })
+    .catch(error => console.log('error', error));
 }
 
 function replyClick(e) {
