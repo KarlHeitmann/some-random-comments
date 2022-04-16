@@ -20,9 +20,30 @@ handlers.upvote = function(data, callback) {
 }
 
 handlers.comments = function(data, callback) {
-  const comments = readCommentsFS('seeds.json')
+  // const comments = readCommentsFS('seeds.json')
+  const comments = readCommentsFS('db.json')
   writeCommentsFS('db.json', comments)
   callback(200, {comments})
+}
+
+handlers.comment = function(data, callback) {
+  const comments = readCommentsFS('db.json')
+  const last_comment = comments[comments.length - 1]
+  const last_key = last_comment.key + 1
+  const random_ph = Math.floor(Math.random() * 5)
+  const comment = {
+    // content: 'asd', // GOOD
+    content: data.payload, // ??
+    avatar: `person_ph_${random_ph}`,
+    // votes: Math.floor(Math.random * 10),
+    votes: 0,
+    // date: new Date(2022, Math.floor(Math.random() * 3), Math.floor(Math.random())),
+    date: new Date,
+    key: last_key
+  }
+  comments.push(comment)
+  writeCommentsFS('db.json', comments)
+  callback(200, {comment: comment})
 }
 
 handlers.sample = function(data, callback) {
@@ -76,6 +97,7 @@ const router = {
   'sample': handlers.sample,
   'upvote': handlers.upvote,
   'comments': handlers.comments,
+  'comment': handlers.comment,
 }
 
 module.exports = router

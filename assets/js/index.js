@@ -99,10 +99,31 @@ function closeModal() {
   document.querySelector('#modalContainer').classList.remove('is-active')
 }
 
+function createComment(e) {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "text/plain");
+  
+  // const raw = "lorem ipsum";
+  const raw = document.querySelector('#comment-content').value;
+  
+  const requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+
+  console.log("::::::::")
+  
+  fetch("http://localhost:3000/comment", requestOptions)
+    .then(response => response.json())
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   const { comments } = await requestComments()
   console.table(comments)
   document.querySelector('.modal-close').addEventListener('click', closeModal)
+  document.querySelector('#create-comment').addEventListener('click', createComment)
   comments.forEach(comment => {
     const row = generateRowHtml(comment)
     document.querySelector('#comments').innerHTML += row
