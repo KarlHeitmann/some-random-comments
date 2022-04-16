@@ -8,7 +8,7 @@ const requestComments = async () => {
     }
   };
   
-  return fetch("http://localhost:3000/sample", requestOptions)
+  return fetch("http://localhost:3000/comments", requestOptions)
     .then(response => response.json())
 }
 
@@ -33,7 +33,7 @@ function timeSince(timeStamp) {
   }
 }
 
-const generateRowHtml = ({content, avatar, date, key}) => {
+const generateRowHtml = ({content, avatar, date, key, votes}) => {
   console.log(date)
   // debugger
   return `
@@ -55,7 +55,7 @@ const generateRowHtml = ({content, avatar, date, key}) => {
             <span
               data-key="${key}"
               id="upvote-${key}">
-              Upvote</span>
+              ${votes} - Upvote</span>
             <span
               data-key="${key}"
               id="reply-${key}"
@@ -81,7 +81,7 @@ function upvoteClick(e) {
     .then(response => response.json())
     .then(result => {
       console.log(result)
-      document.querySelector(`#upvote-${key}`).innerHTML = `${result.count} - Upvote`
+      document.querySelector(`#upvote-${key}`).innerHTML = `${result.votes} - Upvote`
     })
     .catch(error => console.log('error', error));
 }
@@ -91,11 +91,39 @@ function replyClick(e) {
   console.log("REPLY click")
   console.log(e)
   console.log("upvoteClick comment_key: ", key)
+  document.querySelector('#modalContainer').classList.add('is-active')
+}
+
+function closeModal() {
+  console.log("click")
+  document.querySelector('#modalContainer').classList.remove('is-active')
+}
+
+function createComment(e) {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "text/plain");
+  
+  // const raw = "lorem ipsum";
+  const raw = document.querySelector('#comment-content').value;
+  
+  const requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+
+  console.log("::::::::")
+  
+  fetch("http://localhost:3000/comment", requestOptions)
+    .then(response => response.json())
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
   const { comments } = await requestComments()
   console.table(comments)
+  document.querySelector('.modal-close').addEventListener('click', closeModal)
+  document.querySelector('#create-comment').addEventListener('click', createComment)
   comments.forEach(comment => {
     const row = generateRowHtml(comment)
     document.querySelector('#comments').innerHTML += row

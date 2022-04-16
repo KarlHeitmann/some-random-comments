@@ -53,9 +53,9 @@ const httpServer = http.createServer(function(req, res) {
       res.writeHead(statusCode);
       res.end(payloadString);
 
-      console.log("payloadString", payloadString)
+      // console.log("payloadString", payloadString)
 
-      console.log('Returning this response: ', statusCode, payloadString)
+      // console.log('Returning this response: ', statusCode, payloadString)
     })
   })
   

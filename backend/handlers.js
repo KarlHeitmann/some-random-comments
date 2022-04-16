@@ -1,11 +1,49 @@
 const https = require('http');
-
+const fs = require('fs')
 const handlers = {};
 
+const readCommentsFS = (file) => JSON.parse(fs.readFileSync(file))
+const writeCommentsFS = (file, comments) => fs.writeFileSync(file, JSON.stringify(comments)) 
+
 handlers.upvote = function(data, callback) {
-  console.log("data", data)
-  console.log("data.queryStringObject", data.queryStringObject.key)
-  callback(200, {count: Math.floor(Math.random() * 100)});
+  // console.log("data", data)
+  const {key} = data.queryStringObject
+  // console.log("data.queryStringObject", key)
+  const comments = readCommentsFS('db.json')
+  const comment = comments.find(comment => comment.key == key)
+  const i = comments.findIndex(comment => comment.key == key)
+  comment.votes = comment.votes + 1
+  comments[i] = comment
+  writeCommentsFS('db.json', comments)
+
+  callback(200, comment);
+}
+
+handlers.comments = function(data, callback) {
+  // const comments = readCommentsFS('seeds.json')
+  const comments = readCommentsFS('db.json')
+  writeCommentsFS('db.json', comments)
+  callback(200, {comments})
+}
+
+handlers.comment = function(data, callback) {
+  const comments = readCommentsFS('db.json')
+  const last_comment = comments[comments.length - 1]
+  const last_key = last_comment.key + 1
+  const random_ph = Math.floor(Math.random() * 5)
+  const comment = {
+    // content: 'asd', // GOOD
+    content: data.payload, // ??
+    avatar: `person_ph_${random_ph}`,
+    // votes: Math.floor(Math.random * 10),
+    votes: 0,
+    // date: new Date(2022, Math.floor(Math.random() * 3), Math.floor(Math.random())),
+    date: new Date,
+    key: last_key
+  }
+  comments.push(comment)
+  writeCommentsFS('db.json', comments)
+  callback(200, {comment: comment})
 }
 
 handlers.sample = function(data, callback) {
@@ -58,6 +96,8 @@ handlers.sample = function(data, callback) {
 const router = {
   'sample': handlers.sample,
   'upvote': handlers.upvote,
+  'comments': handlers.comments,
+  'comment': handlers.comment,
 }
 
 module.exports = router
