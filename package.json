@@ -9,7 +9,7 @@
     "start": "node server.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run start\" \"npm run client\"",
-    "server:dev": "nodemon server.js"
+    "server:dev": "PORT=3005 nodemon server.js"
   },
   "author": "Karl Heitmann",
   "license": "ISC",
@@ -22,7 +22,9 @@
   },
   "homepage": "https://github.com/KarlHeitmann/some-random-comments#readme",
   "dependencies": {
+    "axios": "^0.26.1",
     "concurrently": "^7.1.0",
+    "cors": "^2.8.5",
     "express": "^4.17.3",
     "mongoose": "^6.3.0"
   },

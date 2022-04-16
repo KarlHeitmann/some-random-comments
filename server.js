@@ -1,7 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors')
 
 const app = express();
+app.use(cors())
 
 
 mongoose.connect(
@@ -12,11 +14,24 @@ mongoose.connect(
   }
 );
 
-
-app.get('/', (req, res) => {
-  res.send("Hello World!");
+const commentSchema = new mongoose.Schema({
+  "content": String,
+  "avatar": String,
+  "votes": Number,
+  "date": String,
+  "key": Number
 });
 
+const Comment = new mongoose.model('Comment', commentSchema);
+
+app.get('/', async (req, res) => {
+  const comments = await Comment.find();
+  console.log(comments)
+  console.log("asddsa")
+  res.send({comments});
+});
+console.log("process.env", process.env)
+console.log("process.env.PORT", process.env.PORT)
 const PORT = process.env.PORT || 3001;
 console.log("::::::::::::: PORT, ", PORT)
 app.listen(PORT);
