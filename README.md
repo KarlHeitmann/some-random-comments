@@ -1,3 +1,13 @@
+# OVERVIEW SECOND VERSION V2
+
+After running `npm install`, run
+
+```
+npm run dev
+```
+
+To get started, everything is ready to work out of the box
+
 # OVERVIEW FIRST VERSION V1
 
 This is a sample web that has a frontend and backend.
