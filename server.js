@@ -21,7 +21,8 @@ const commentSchema = new mongoose.Schema({
   "avatar": String,
   "votes": Number,
   "date": String,
-  "key": Number
+  "key": Number,
+  "parent_comment": String
 });
 
 const Comment = new mongoose.model('Comment', commentSchema);
@@ -57,11 +58,15 @@ app.post('/reply', async (req, res) => {
   res.send({comments});
 });
 
-app.get('/upvote', async (req, res) => {
-  const comments = await Comment.find();
-  console.log(comments)
-  console.log("asddsa")
-  res.send({comments});
+app.post('/upvote', async (req, res) => {
+  const {id} = req.query
+  // const comment = await Comment.find({_id: id});
+  const comment = await Comment.findById(id);
+  console.log(comment)
+  comment.votes += 1
+  comment.save()
+  console.log("upvote", req.query.id)
+  res.send({comment});
 });
 
 console.log("process.env", process.env)

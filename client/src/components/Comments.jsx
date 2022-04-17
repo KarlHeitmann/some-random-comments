@@ -16,9 +16,20 @@ function Comments({comments, setComments}) {
       console.log("comments", comments)
     })
   }
-  const onUpVote = (e) => {
+  const onUpVote = (e, id) => {
     console.log(e)
-    console.log("onUpVote");
+    console.log("onUpVote", id);
+    axios.post(config['domain'] + `/upvote?id=${id}`)
+      .then(function(response) {
+        const {comment} = response.data
+        console.log("comment", response, comment)
+        // const comment = comments.find(comment => comment.key == key)
+        const i = comments.findIndex(comment => comment._id == id)
+        console.log("i", i)
+        comments[i].votes = comment.votes
+        setComments([...comments])
+
+      })
   }
   return (
     <>
@@ -45,7 +56,7 @@ function Comments({comments, setComments}) {
                 <small>
                   <strong>&#x2303;
                     <span
-                      onClick={onUpVote}>{comment.votes} - Upvote</span>
+                      onClick={(e) => onUpVote(e, comment._id)}>{comment.votes} - Upvote</span>
                     <span
                       onClick={onReply}
                     >Reply</span>
