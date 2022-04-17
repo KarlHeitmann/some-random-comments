@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import config from "../config.json"
 import { timeSince } from "../utils/index";
+import Comments from "./Comments";
 import NewComment from "./NewComment";
 
 function Comment({comment, setCS, appendComment, id, i}) {
@@ -41,6 +42,11 @@ function Comment({comment, setCS, appendComment, id, i}) {
     setComments([...cs.data.comments])
     return cs.data.comments
   }
+  const subAppendComment = async (comment) => {
+    comments.push(comment)
+    await setComments([...comments])
+  }
+
   return (
     <div
       className="columns px-2">
@@ -58,11 +64,10 @@ function Comment({comment, setCS, appendComment, id, i}) {
           </span>
         </h5>
         <p>{comment.content.replace('</p>', '').replace('<p>', '')}</p>
-        {
-          comments.map(c => {
-            return(<div><small>{c.content}</small></div>)
-          })
-        }
+        <Comments
+          appendComment={subAppendComment}
+          setComments={setComments}
+          comments={comments}/>
         <small>
           <strong>&#x2303;
             <span
