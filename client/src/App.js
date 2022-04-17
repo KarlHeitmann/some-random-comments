@@ -25,9 +25,13 @@ function App() {
   return (
     <section className="container px-2">
       <h1 className="is-size-1">Discussion</h1>
-      <NewComment appendComment={appendComment}/>
+      <NewComment
+        appendComment={appendComment}
+        parentComment={null}
+        />
       <hr />
       <Comments
+        appendComment={appendComment}
         setComments={setComments}
         comments={comments}/>
     </section>

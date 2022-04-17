@@ -3,12 +3,14 @@ import axios from "axios";
 import ph1 from '../images/person_ph_1.jpg'
 import config from "../config.json"
 
-function NewComment({appendComment}) {
+function NewComment({appendComment, parentCommentId}) {
   const [comment, setComment] = useState('')
 
   const sendComment = (e) => {
-    console.log("sendComment", comment)
-    axios.post(config['domain'] + '/comment', {
+    console.log("sendComment", comment, parentCommentId)
+    
+    const uri_q = parentCommentId == null ? '/comment' : `/comment?id=${parentCommentId}`
+    axios.post(config['domain'] + uri_q, {
       content: comment,
     }).then(function(response) {
       const {comment} = response.data
