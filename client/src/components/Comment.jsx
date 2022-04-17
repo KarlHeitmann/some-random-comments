@@ -1,9 +1,11 @@
 import axios from "axios";
+import { useEffect, useState } from "react";
 import config from "../config.json"
 import { timeSince } from "../utils/index";
 import NewComment from "./NewComment";
 
 function Comment({comment, setCS, appendComment, id, i}) {
+  const [comments, setComments] = useState([])
   const onReply = async (e) => {
     console.log(e)
     console.log("onReply");
@@ -22,30 +24,25 @@ function Comment({comment, setCS, appendComment, id, i}) {
       .then(function(response) {
         const {comment} = response.data
         console.log("comment", response, comment)
-        // const comment = comments.find(comment => comment.key == key)
         console.log("i", i)
         setCS(comment, i)
-        // comments[i].votes = comment.votes
-        // setComments([...comments])
-
       })
   }
 
+  useEffect(() => {
+    console.log("comment init", id)
+    if (id != null) {
+      fetchChildren(id)
+    }
+  }, [])
   const fetchChildren = async(id) => {
-    // axios.get(config['domain'] + `?id=${id}`).then(function(response) {
-    //   const {comments} = response.data
-    //   console.log("children", comments)
-    //   // setComments(comments)
-    //   // setComments(response)
-    // })
-      
-    // return []
     const cs = await axios.get(config['domain'] + `?id=${id}`)
+    console.log("cs", cs.data.comments)
+    setComments([...cs.data.comments])
     return cs.data.comments
   }
   return (
     <div
-      key={comment._id}
       className="columns px-2">
       <figure className="image is-64x64 column is-1">
         <img
@@ -61,6 +58,11 @@ function Comment({comment, setCS, appendComment, id, i}) {
           </span>
         </h5>
         <p>{comment.content.replace('</p>', '').replace('<p>', '')}</p>
+        {
+          comments.map(c => {
+            return(<div><small>{c.content}</small></div>)
+          })
+        }
         <small>
           <strong>&#x2303;
             <span

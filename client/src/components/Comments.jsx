@@ -14,6 +14,7 @@ function Comments({comments, setComments, appendComment}) {
         comments.map((comment, i) => {
           return(
             <Comment
+              key={comment._id}
               id={comment._id}
               i={i}
               setCS={setCS}

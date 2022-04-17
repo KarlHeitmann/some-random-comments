@@ -1,7 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
-const cors = require('cors')
+const cors = require('cors');
+const { comment } = require('./backend/handlers');
 
 const app = express();
 app.use(cors())
@@ -28,20 +29,29 @@ const commentSchema = new mongoose.Schema({
 const Comment = new mongoose.model('Comment', commentSchema);
 
 app.get('/', async (req, res) => {
-  const comments = await Comment.find();
-  console.log(comments)
-  console.log("asddsa")
+
+  const {id} = req.query
+  const comments = await Comment.find({parent_comment: id});
+  if (id != null) {
+    console.log(id, comments)
+  } else {
+    console.log(comments)
+    console.log("asddsa")
+
+  }
   res.send({comments});
 });
 
 app.post('/comment', async (req, res) => {
   const comments = [];
+  const {id} = req.query
   const comment = new Comment({
     content: req.body.content,
     avatar: Math.floor(Math.random() * 500),
     votes: 0,
     date: new Date(),
-    key: Math.floor(Math.random() * 1000)
+    key: Math.floor(Math.random() * 1000),
+    parent_comment: id,
   })
   comment.save()
   console.log(comment)
@@ -52,10 +62,20 @@ app.post('/comment', async (req, res) => {
 });
 
 app.post('/reply', async (req, res) => {
+  const {id} = req.query
   const comments = await Comment.find();
+  const comment = new Comment({
+    content: req.body.content,
+    avatar: Math.floor(Math.random() * 500),
+    votes: 0,
+    date: new Date(),
+    key: Math.floor(Math.random() * 1000),
+    parent_comment: id
+  })
+  comment.save
   console.log(comments)
   console.log("reply")
-  res.send({comments});
+  res.send({comment});
 });
 
 app.post('/upvote', async (req, res) => {
