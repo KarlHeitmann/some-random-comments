@@ -27,7 +27,8 @@
     "concurrently": "^7.1.0",
     "cors": "^2.8.5",
     "express": "^4.17.3",
-    "mongoose": "^6.3.0"
+    "mongoose": "^6.3.0",
+    "ws": "^8.5.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
