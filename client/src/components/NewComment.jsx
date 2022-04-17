@@ -1,11 +1,19 @@
 import { useState } from "react";
+import axios from "axios";
 import ph1 from '../images/person_ph_1.jpg'
+import config from "../config.json"
 
 function NewComment() {
   const [comment, setComment] = useState('')
 
   const sendComment = (e) => {
     console.log("sendComment", comment)
+    axios.post(config['domain'] + '/comment', {
+      content: "dummy"
+    }).then(function(response) {
+      const {comments} = response
+      console.log("comments", comments)
+    })
   }
   return (
     <div className="is-flex is-align-items-center">

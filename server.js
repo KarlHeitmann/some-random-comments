@@ -30,6 +30,28 @@ app.get('/', async (req, res) => {
   console.log("asddsa")
   res.send({comments});
 });
+
+app.post('/comment', async (req, res) => {
+  const comments = [];
+  console.log("req.body", req.body)
+  console.log("new comment")
+  res.send({comments});
+});
+
+app.post('/reply', async (req, res) => {
+  const comments = await Comment.find();
+  console.log(comments)
+  console.log("reply")
+  res.send({comments});
+});
+
+app.get('/upvote', async (req, res) => {
+  const comments = await Comment.find();
+  console.log(comments)
+  console.log("asddsa")
+  res.send({comments});
+});
+
 console.log("process.env", process.env)
 console.log("process.env.PORT", process.env.PORT)
 const PORT = process.env.PORT || 3001;
