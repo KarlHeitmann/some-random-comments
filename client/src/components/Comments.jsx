@@ -1,5 +1,6 @@
 import axios from "axios";
 import config from "../config.json"
+import { timeSince } from "../utils/index";
 
 function Comments({comments, setComments}) {
   console.log("comments child: ", comments)
@@ -21,7 +22,6 @@ function Comments({comments, setComments}) {
   }
   return (
     <>
-      <h1>COMMENTS - COMMENTS</h1>
       {
         comments.map(comment => {
           return(
@@ -30,11 +30,17 @@ function Comments({comments, setComments}) {
               className="columns px-2">
               <figure className="image is-64x64 column is-1">
                 <img
-                  src={`https://robohash.org/${comment.key}.png`}
+                  src={`https://robohash.org/${comment._id}.png`}
                   className="is-rounded"
                   alt="robohash avatar" />
               </figure>
               <div className="mx-5">
+                <h5>
+                  <strong>{comment.avatar.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</strong>
+                  <span>
+                    {timeSince(new Date(comment.date))}
+                  </span>
+                </h5>
                 <p>{comment.content.replace('</p>', '').replace('<p>', '')}</p>
                 <small>
                   <strong>&#x2303;
@@ -50,7 +56,6 @@ function Comments({comments, setComments}) {
           )
         })
       }
-      <h1>========================</h1>
     </>
   )
 }

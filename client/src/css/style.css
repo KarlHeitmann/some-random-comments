@@ -11,3 +11,7 @@ h5 > span {
   color: #4B587C;
   font-weight: 400;
 }
+
+span, strong {
+  margin: 0px 1rem 0px 0px;
+}
