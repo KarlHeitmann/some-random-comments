@@ -37,7 +37,7 @@ function App({
       setComments(comments)
       // setComments(response)
     })
-    const socketUrl = 'ws://localhost:3005/?key=1'
+    const socketUrl = 'ws://localhost:3001/?key=1'
     const ws = new WebSocket(socketUrl);
     ws.onopen = () => {
       console.log('Connected to socket');

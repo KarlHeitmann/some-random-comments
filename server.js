@@ -11,8 +11,11 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// const mongo_uri = 'mongodb+srv://karl:<password>@cluster0.adqae.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+const mongo_uri = 'mongodb+srv://tryghost:tryghost@cluster0.adqae.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+// const mongo_uri = 'mongodb://localhost/mern'
 mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://localhost/mern",
+  process.env.MONGODB_URI || mongo_uri,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -33,7 +36,9 @@ const Comment = new mongoose.model('Comment', commentSchema);
 app.get('/', async (req, res) => {
 
   const {id} = req.query
+  console.log("asddsa")
   const comments = await Comment.find({parent_comment: id});
+  console.log(comments)
   if (id != null) {
     // console.log(id, comments)
   } else {
@@ -87,6 +92,7 @@ app.post('/upvote', async (req, res) => {
   // console.log(comment)
   comment.votes += 1
   comment.save()
+  
   // console.log("upvote", req.query.id)
   res.send({comment});
 });
@@ -103,7 +109,7 @@ websocketServer.on('connection', (webSocketClient, incoming_request) => {
   setInterval(async () => {
     // const data_to_send = JSON.stringify({"msg": "vamooosss"})
     const comments = await Comment.find({parent_comment: null})
-    console.log(comments)
+    // console.log(comments)
     const data_to_send = JSON.stringify({
       "comments": comments
     })
