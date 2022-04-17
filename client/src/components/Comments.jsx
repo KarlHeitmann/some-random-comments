@@ -1,7 +1,7 @@
 import axios from "axios";
 import config from "../config.json"
 
-function Comments({comments}) {
+function Comments({comments, setComments}) {
   console.log("comments child: ", comments)
   console.log("config", config)
   const onReply = async (e) => {
@@ -26,7 +26,7 @@ function Comments({comments}) {
         comments.map(comment => {
           return(
             <div
-              key={comment.key}
+              key={comment._id}
               className="columns px-2">
               <figure className="image is-64x64 column is-1">
                 <img

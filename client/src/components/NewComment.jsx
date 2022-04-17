@@ -3,16 +3,18 @@ import axios from "axios";
 import ph1 from '../images/person_ph_1.jpg'
 import config from "../config.json"
 
-function NewComment() {
+function NewComment({appendComment}) {
   const [comment, setComment] = useState('')
 
   const sendComment = (e) => {
     console.log("sendComment", comment)
     axios.post(config['domain'] + '/comment', {
-      content: "dummy"
+      content: comment,
     }).then(function(response) {
-      const {comments} = response
-      console.log("comments", comments)
+      const {comment} = response.data
+      appendComment(comment)
+      console.log("response", response)
+      console.log("comment", comment)
     })
   }
   return (

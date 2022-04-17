@@ -1,10 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require("body-parser");
 const cors = require('cors')
 
 const app = express();
 app.use(cors())
-
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 mongoose.connect(
   process.env.MONGODB_URI || "mongodb://localhost/mern",
@@ -33,9 +35,19 @@ app.get('/', async (req, res) => {
 
 app.post('/comment', async (req, res) => {
   const comments = [];
+  const comment = new Comment({
+    content: req.body.content,
+    avatar: Math.floor(Math.random() * 500),
+    votes: 0,
+    date: new Date(),
+    key: Math.floor(Math.random() * 1000)
+  })
+  comment.save()
+  console.log(comment)
+
   console.log("req.body", req.body)
   console.log("new comment")
-  res.send({comments});
+  res.send({comment});
 });
 
 app.post('/reply', async (req, res) => {

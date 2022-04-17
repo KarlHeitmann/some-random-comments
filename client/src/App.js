@@ -15,13 +15,21 @@ function App() {
       // setComments(response)
     })
   }, [])
+
+  const appendComment = async (comment) => {
+    comments.push(comment)
+    await setComments([...comments])
+  }
+
   // TODO: Use robots api to fake avatar
   return (
     <section className="container px-2">
       <h1 className="is-size-1">Discussion</h1>
-      <NewComment />
+      <NewComment appendComment={appendComment}/>
       <hr />
-      <Comments comments={comments}/>
+      <Comments
+        setComments={setComments}
+        comments={comments}/>
     </section>
   );
 }
